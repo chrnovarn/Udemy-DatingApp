@@ -21,7 +21,7 @@
           </ul>
 
           <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
-            <img src="{{user.photoUrl || './assets/user.png'}}" alt="{{user.username}}">
+            <img src="{{user.photoUrl || './assets/user.png'}}" alt="{{user.userName}}">
               <a class="dropdown-toggle text-light ml-2" dropdownToggle>Welcome {{user.knownAs | titlecase}}</a>
               <div class="dropdown-menu mt-3" *dropdownMenu>
                 
@@ -34,8 +34,8 @@
           <form *ngIf="(accountService.currentUser$ | async) ===null" #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" 
           autocomplete="off">
             <input 
-            name="username"
-            [(ngModel)]="model.username"
+            name="userName"
+            [(ngModel)]="model.userName"
             class="form-control me-2" type="text" placeholder="Username">
             <input 
             name="password"
