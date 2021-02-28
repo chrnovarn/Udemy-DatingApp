@@ -8,6 +8,7 @@ using API.Extensions;
 using API.Interfaces;
 using API.Middleware;
 using API.Services;
+using API.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -47,6 +48,7 @@ namespace API
 
             services.AddCors();
             services.AddIdentityServices(_config);
+            services.AddSignalR();
         }
 
         private void JwtBearerDefault(AuthenticationOptions obj)
@@ -69,7 +71,10 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(x=> x.AllowAnyHeader().WithOrigins("https://localhost:4200").WithMethods("PUT", "DELETE", "GET"));
+            app.UseCors(x=> x.AllowAnyHeader()
+            .WithOrigins("https://localhost:4200")
+            .AllowCredentials()
+            .WithMethods("PUT", "DELETE", "GET"));
 
             app.UseAuthentication();
 
@@ -78,6 +83,8 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
+                endpoints.MapHub<MessageHub>("hubs/message");
             });
         }
     }
